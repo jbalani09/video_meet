@@ -1,0 +1,70 @@
+{
+  "project_info": {
+    "project_number": "750456514885",
+    "project_id": "bebuzee-dynamic-links",
+    "storage_bucket": "bebuzee-dynamic-links.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:750456514885:android:9001811dcc31e8b518362c",
+        "android_client_info": {
+          "package_name": "com.bebuzee"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "750456514885-364itllvtdhe6ln42ve0i9qlo2m23344.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bebuzee",
+            "certificate_hash": "496ad28174b8f475997ae0f3a608bf9a77630e5c"
+          }
+        },
+        {
+          "client_id": "750456514885-7mnon8uf5b117gb501o6ronvtvg9f7lq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bebuzee",
+            "certificate_hash": "1346b6fe9f06e7d616983e949b26cac024b0e18a"
+          }
+        },
+        {
+          "client_id": "750456514885-csvs7ig7n4j2grpk3bbkm00ip75revat.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bebuzee",
+            "certificate_hash": "eac3decf56156854ad2423fd6508a0dc3be3133b"
+          }
+        },
+        {
+          "client_id": "750456514885-b501g9msobrteq50mk9vbvdqgligluj0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9bAYZDHOErtGPeIQ3BmE1nEdTBSH2iVQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "750456514885-b501g9msobrteq50mk9vbvdqgligluj0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "750456514885-c5hosshtemepb8pkr2ioeqlcq997gbir.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.bebuzee"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
