@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:vediomeet/helpers/constants.dart';
-import 'package:vediomeet/login_view.dart';
 
+import '../helpers/firebase_method.dart';
 import 'home_page.dart';
+import 'login_view.dart';
+
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -23,34 +25,6 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController nameController = TextEditingController();
 
-  Future sendDataToCollection(String email, String password,String name,String token) async{
-    late UserCredential user;
-    try{
-      await FirebaseFirestore.instance.collection("Users").doc(token).set({
-        'email': email,
-        'name': name,
-        'password': password,
-        'token': token,
-        'device_token':getStringAsync(DEVICE_TOKEN)
-      });
-    }on PlatformException catch (e) {
-      toast(e.message.toString());
-    }
-  }
-
-  Future<String> signUp(String email, String password) async{
-    late UserCredential user;
-    try{
-      user = await _firebaseAuth.createUserWithEmailAndPassword(
-          email: email, password: password);
-      sendDataToCollection(email,password,nameController.text,user.user!.uid);
-      setValue(TOKEN, user.user!.uid);
-      HomePage().launch(context,isNewTask: true);
-    }on PlatformException catch (e) {
-      toast(e.message.toString());
-    }
-    return user.user!.uid;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -163,7 +137,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         borderRadius: BorderRadius.circular(20),
                         child: InkWell(
                           onTap: (){
-                            signUp(emailController.text,passwordController.text);
+                            signUp(nameController.text,emailController.text,passwordController.text,context,_firebaseAuth);
                           },
                           child: Container(
                             color: Colors.brown,
@@ -178,49 +152,6 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                   ),
-                  // Padding(
-                  //   padding: const EdgeInsets.only(left:15, right:15, bottom: 20),
-                  //   child: Row(
-                  //     children: <Widget>[
-                  // Expanded(
-                  //   child: Padding(
-                  //     padding: const EdgeInsets.only(left:10, right:5),
-                  //     child: SignInButton(
-                  //       Buttons.AppleDark,
-                  //       text: "Sign in",
-                  //       onPressed: (){
-                  //
-                  //       },
-                  //     ),
-                  //   ),
-                  // ),
-                  // Expanded(
-                  //   child: Padding(
-                  //     padding: const EdgeInsets.only(left:5, right:5),
-                  //     child: SignInButton(
-                  //       Buttons.Google,
-                  //       text: "Sign in",
-                  //       onPressed: (){
-                  //
-                  //       },
-                  //     ),
-                  //   ),
-                  // ),
-                  // Expanded(
-                  //   child: Padding(
-                  //     padding: const EdgeInsets.only(left:5, right:10),
-                  //     child: SignInButton(
-                  //       Buttons.Facebook,
-                  //       text: "Sign in",
-                  //       onPressed: (){
-                  //
-                  //       },
-                  //     ),
-                  //   ),
-                  // ),
-                  //     ],
-                  //   ),
-                  // )
                 ],
               ),
             ),

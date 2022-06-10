@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../calling_page.dart';
-import '../home_page.dart';
-import '../login_view.dart';
+import '../screens/calling_page.dart';
+import '../screens/home_page.dart';
+import '../screens/login_view.dart';
 
 class AppRoute {
   static const homePage = '/home_page';

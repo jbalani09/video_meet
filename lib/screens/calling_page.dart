@@ -1,24 +1,21 @@
-import 'dart:async';
-
 import 'package:agora_rtc_engine/rtc_engine.dart';
-import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
-import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 import 'package:agora_uikit/agora_uikit.dart';
 import 'package:flutter/material.dart';
-import 'package:vediomeet/helpers/constants.dart';
+import 'package:nb_utils/nb_utils.dart';
+import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
+import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 
+import '../helpers/constants.dart';
+import '../helpers/constants.dart';
 
-
-class VideoCall extends StatefulWidget {
-  String channelName;
-  final ClientRole role;
-  VideoCall({Key ?key, required this.channelName, required this.role}) : super(key: key);
-
+class CallingPage extends StatefulWidget {
   @override
-  _VideoCallState createState() => _VideoCallState();
+  State<StatefulWidget> createState() {
+    return CallingPageState();
+  }
 }
 
-class _VideoCallState extends State<VideoCall> {
+class CallingPageState extends State<CallingPage> {
   final _users = <int>[];
   final _infoStrings = <String>[];
   bool muted = false;
@@ -58,7 +55,7 @@ class _VideoCallState extends State<VideoCall> {
     VideoEncoderConfiguration configuration = VideoEncoderConfiguration();
     configuration.dimensions = VideoDimensions();
     await _engine.setVideoEncoderConfiguration(configuration);
-    await _engine.joinChannel(AGORA_TOKEN, widget.channelName, null,0);
+    await _engine.joinChannel(AGORA_TOKEN, CHANNEL_NAME, null,0);
   }
 
   Future<void> _handleCameraAndMic(Permission permission) async {
@@ -70,7 +67,7 @@ class _VideoCallState extends State<VideoCall> {
     _engine = await RtcEngine.create(APP_ID);
     await _engine.enableVideo();
     await _engine.setChannelProfile(ChannelProfile.LiveBroadcasting);
-    await _engine.setClientRole(widget.role);
+    await _engine.setClientRole(CLIENT_ROLE);
   }
 
   void _addAgoraEventHandlers() {
@@ -111,10 +108,10 @@ class _VideoCallState extends State<VideoCall> {
 
   List<Widget> _getRenderViews() {
     final List<StatefulWidget> list = [];
-    if (widget.role == ClientRole.Broadcaster) {
       list.add(const RtcLocalView.SurfaceView());
+    for (var uid in _users) {
+      list.add(RtcRemoteView.SurfaceView(uid: uid,channelId: "20",));
     }
-    _users.forEach((int uid) => list.add(RtcRemoteView.SurfaceView(uid: uid,channelId: "20",)));
     return list;
   }
 
@@ -165,7 +162,7 @@ class _VideoCallState extends State<VideoCall> {
   }
 
   Widget _toolbar() {
-    if (widget.role == ClientRole.Audience) return Container();
+    if (CLIENT_ROLE == ClientRole.Audience) return Container();
     return Container(
       alignment: Alignment.bottomCenter,
       padding: const EdgeInsets.symmetric(vertical: 48),
@@ -297,3 +294,63 @@ class _VideoCallState extends State<VideoCall> {
     );
   }
 }
+
+
+
+// class CallingPage extends StatefulWidget {
+//   @override
+//   State<StatefulWidget> createState() {
+//     return CallingPageState();
+//   }
+// }
+//
+// class CallingPageState extends State<CallingPage> {
+//   late dynamic calling;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     calling = ModalRoute.of(context)!.settings.arguments;
+//     print(calling);
+//
+//     return Scaffold(
+//         body: Container(
+//             height: MediaQuery.of(context).size.height,
+//             width: double.infinity,
+//             child: Center(
+//               child: Column(
+//                 mainAxisAlignment: MainAxisAlignment.center,
+//                 crossAxisAlignment: CrossAxisAlignment.center,
+//                 children: [
+//                   Text('Calling...'),
+//                   TextButton(
+//                     style: ButtonStyle(
+//                       foregroundColor:
+//                           MaterialStateProperty.all<Color>(Colors.blue),
+//                     ),
+//                     onPressed: () async {
+//                       FlutterCallkitIncoming.endCall(calling);
+//                       calling = null;
+//                       NavigationService.instance.goBack();
+//                       await requestHttp('END_CALL');
+//                     },
+//                     child: Text('End Call'),
+//                   )
+//                 ],
+//               ),
+//             )));
+//   }
+//
+//   //check with https://webhook.site/#!/2748bc41-8599-4093-b8ad-93fd328f1cd2
+//   Future<void> requestHttp(content) async {
+//     get(Uri.parse(
+//         'https://webhook.site/2748bc41-8599-4093-b8ad-93fd328f1cd2?data=$content'));
+//   }
+//
+//   @override
+//   void dispose() {
+//     super.dispose();
+//     if (calling != null) {
+//       FlutterCallkitIncoming.endCall(calling);
+//     }
+//   }
+// }

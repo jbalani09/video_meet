@@ -5,10 +5,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:vediomeet/register_page.dart';
+import 'package:vediomeet/screens/register_page.dart';
 
-import 'helpers/constants.dart';
+import '../helpers/constants.dart';
+import '../helpers/firebase_method.dart';
 import 'home_page.dart';
+
 
 class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
@@ -21,30 +23,7 @@ TextEditingController emailController = TextEditingController();
 TextEditingController passwordController = TextEditingController();
 TextEditingController nameController = TextEditingController();
 
-Future updateDeviceToken(String token) async{
-  late UserCredential user;
-  try{
-    FirebaseFirestore.instance.collection('Users').doc(token).update({'device_token': getStringAsync(DEVICE_TOKEN)});
-  }on PlatformException catch (e) {
-    toast(e.message.toString());
-  }
-}
 
-
-Future<String> signIn(String email, String password) async{
-  late UserCredential user;
-  try{
-    user = await _firebaseAuth.signInWithEmailAndPassword(
-          email: email, password: password);
-    print("EMAIL${user.user!.email}");
-    setValue(TOKEN, user.user!.uid);
-    updateDeviceToken(user.user!.uid);
-    HomePage().launch(context);
-    }on PlatformException catch (e) {
-    toast(e.message.toString());
-  }
-  return user.user!.uid;
-}
 
   @override
   Widget build(BuildContext context) {
@@ -138,7 +117,7 @@ Future<String> signIn(String email, String password) async{
                       borderRadius: BorderRadius.circular(20),
                       child: InkWell(
                         onTap: (){
-                          signIn(emailController.text,passwordController.text);
+                          signIn(emailController.text,passwordController.text,_firebaseAuth,context);
                         },
                         child: Container(
                           color: Colors.brown,

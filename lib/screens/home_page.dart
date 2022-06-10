@@ -1,20 +1,19 @@
-import 'package:agora_uikit/agora_uikit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:vediomeet/call_screen.dart';
-import 'package:vediomeet/login_view.dart';
-import 'helpers/app_router.dart';
-import '/navigation_service.dart';
+import 'package:vediomeet/screens/calling_page.dart';
+import '../helpers/app_router.dart';
+import '../helpers/navigation_service.dart';
 import 'package:uuid/uuid.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart'  as http;
 
-import 'helpers/constants.dart';
+import '../helpers/constants.dart';
+import 'login_view.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -136,7 +135,7 @@ class HomePageState extends State<HomePage> {
                   trailing: const Icon(Icons.videocam_rounded,size: 30,color: Colors.blue,),
                   onTap: (){
                     sendFcmMessage(docs[index]['name'],docs[index]['name'],docs[index]['device_token']).then((value) {
-                      value?VideoCall(channelName: CHANNEL_NAME, role: CLIENT_ROLE,).launch(context):toast("Something went wrong");
+                      value?CallingPage().launch(context):toast("Something went wrong");
                     });
                   },
                 ),
